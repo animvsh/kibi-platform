@@ -17,6 +17,17 @@ const sourceTypes = [
   { id: "youtube", label: "YouTube Video", icon: Video, description: "Video URL with transcript" },
 ];
 
+interface CreatedUnit {
+  id: string;
+  title: string;
+}
+
+interface CreatedLesson {
+  id: string;
+  title: string;
+  unitId: string;
+}
+
 export default function CreateCoursePage() {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
@@ -26,6 +37,9 @@ export default function CreateCoursePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState<GenerationProgress | null>(null);
+  const [createdUnits, setCreatedUnits] = useState<CreatedUnit[]>([]);
+  const [createdLessons, setCreatedLessons] = useState<CreatedLesson[]>([]);
+  const [courseId, setCourseId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -180,6 +194,23 @@ export default function CreateCoursePage() {
                   try {
                     const data = JSON.parse(line.slice(6));
 
+                    // Handle entity creation events for live updates
+                    if (data.type === "course_created") {
+                      setCourseId(data.data.courseId);
+                    }
+
+                    if (data.type === "unit_created") {
+                      setCreatedUnits(prev => [...prev, data.data.unit]);
+                    }
+
+                    if (data.type === "lesson_created") {
+                      setCreatedLessons(prev => [...prev, {
+                        id: data.data.lesson.id,
+                        title: data.data.lesson.title,
+                        unitId: data.data.unitId,
+                      }]);
+                    }
+
                     if (data.type === "completed") {
                       // Generation complete, redirect to course
                       setTimeout(() => {
@@ -223,6 +254,9 @@ export default function CreateCoursePage() {
     eventSourceRef.current?.close();
     setIsGenerating(false);
     setGenerationProgress(null);
+    setCreatedUnits([]);
+    setCreatedLessons([]);
+    setCourseId(null);
   }, []);
 
   return (
@@ -415,6 +449,11 @@ export default function CreateCoursePage() {
             <GenerationProgressDisplay
               progress={generationProgress}
               isActive={isGenerating}
+              entities={{
+                courseId: courseId || undefined,
+                units: createdUnits,
+                lessons: createdLessons,
+              }}
             />
           )}
 

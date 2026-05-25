@@ -3,18 +3,25 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Circle, Loader2, Sparkles, BookOpen, FileText, HelpCircle, Layers, Brain, GraduationCap } from "lucide-react";
+import { CheckCircle, Circle, Loader2, Sparkles, BookOpen, FileText, HelpCircle, Layers, Brain, GraduationCap, ChevronRight } from "lucide-react";
 import type {
   GenerationProgress,
   GenerationStatus,
 } from "@/types/generation";
+import { useState, useEffect } from "react";
 
-// Re-export for convenience
 export type { GenerationProgress, GenerationStatus };
 
 interface GenerationProgressProps {
   progress: GenerationProgress | null;
   isActive: boolean;
+  // Live entity events from SSE
+  entities?: {
+    courseId?: string;
+    units?: Array<{ id: string; title: string }>;
+    lessons?: Array<{ id: string; title: string; unitId: string }>;
+  };
+  onCourseCreated?: (courseId: string) => void;
 }
 
 const STATUS_STEPS: Array<{
@@ -65,14 +72,17 @@ function computeCompletedSteps(status: GenerationStatus): Set<GenerationStatus> 
 export function GenerationProgressDisplay({
   progress,
   isActive,
+  entities = {},
 }: GenerationProgressProps) {
-  // Compute derived state directly from progress - no internal state needed
   const completedSteps = progress ? computeCompletedSteps(progress.status) : new Set<GenerationStatus>();
   const currentStep = progress?.status ?? null;
 
   if (!isActive || !progress) {
     return null;
   }
+
+  const units = entities.units || [];
+  const lessons = entities.lessons || [];
 
   return (
     <Card className="w-full">
@@ -149,6 +159,48 @@ export function GenerationProgressDisplay({
             })}
           </div>
         </div>
+
+        {/* Live Units Created */}
+        {units.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              Units Created ({units.length}
+              {progress.totalUnits ? `/${progress.totalUnits}` : ""})
+            </p>
+            <div className="space-y-1">
+              {units.map((unit, i) => (
+                <div
+                  key={unit.id}
+                  className="flex items-center gap-2 text-sm bg-slate-50 rounded px-3 py-2"
+                >
+                  <Layers className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                  <span className="truncate">{unit.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Live Lessons Created */}
+        {lessons.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">
+              Lessons Created ({lessons.length}
+              {progress.totalLessons ? `/${progress.totalLessons}` : ""})
+            </p>
+            <div className="space-y-1 max-h-48 overflow-y-auto">
+              {lessons.map((lesson) => (
+                <div
+                  key={lesson.id}
+                  className="flex items-center gap-2 text-sm bg-slate-50 rounded px-3 py-1.5"
+                >
+                  <ChevronRight className="h-3 w-3 text-slate-400 flex-shrink-0" />
+                  <span className="truncate text-xs">{lesson.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {progress.error && (
           <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
