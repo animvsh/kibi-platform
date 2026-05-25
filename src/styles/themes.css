@@ -1,0 +1,21 @@
+
+/* Theme definitions and variables */
+
+@layer base {
+  /* Dark mode theme colors are already defined in base.css */
+  
+  /* Additional theme customization can be added here */
+  .theme-kibi {
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 98%;
+  }
+
+  /* Alternative themes can be defined here */
+  .theme-alt {
+    --primary: 248 90% 66%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 248 30% 30%;
+    --secondary-foreground: 0 0% 98%;
+  }
+}

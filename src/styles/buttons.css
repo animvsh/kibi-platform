@@ -1,0 +1,90 @@
+
+@layer base {
+  /* New 3D button styles */
+  .button-3d {
+    @apply relative rounded-3xl border-4 bg-kibi-500 border-kibi-600 text-white font-bold py-2 px-4 transition-all duration-300;
+    box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.1) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+    transform: translateZ(0);
+  }
+  
+  .button-3d:hover {
+    @apply bg-kibi-600;
+    transform: translateY(-3px);
+    box-shadow: 0px 11px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.1) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+  }
+  
+  .button-3d:active {
+    @apply bg-kibi-700;
+    transform: translateY(3px);
+    box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.1) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+  }
+  
+  /* Secondary 3D button with increased border radius */
+  .button-3d-secondary {
+    @apply relative rounded-3xl border-4 bg-dark-400 border-dark-300 text-gray-300 font-bold py-2 px-4 transition-all duration-300;
+    box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.05) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+  }
+  
+  .button-3d-secondary:hover {
+    @apply bg-dark-300 text-white;
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: 0px 11px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.05) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+  }
+  
+  .button-3d-secondary:active {
+    @apply bg-dark-200;
+    transform: translateY(3px) rotate(1deg);
+    box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.3),
+                0px 4px 0px rgba(255, 255, 255, 0.05) inset,
+                0px -2px 0px rgba(0, 0, 0, 0.2) inset;
+  }
+  
+  /* New button pop effect */
+  .button-pop {
+    @apply relative transition-all duration-200;
+    transform: perspective(800px) rotateX(0) translateZ(0);
+  }
+  
+  .button-pop:hover {
+    transform: perspective(800px) rotateX(-5deg) translateY(-5px) translateZ(0);
+  }
+  
+  .button-pop:active {
+    transform: perspective(800px) rotateX(5deg) translateY(3px) translateZ(0);
+  }
+}
+
+/* Shine effect for buttons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.6s ease;
+}
+
+.btn-shine:hover::after {
+  opacity: 1;
+  left: 120%;
+  transition: all 0.6s ease;
+}

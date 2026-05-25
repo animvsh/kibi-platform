@@ -1,0 +1,164 @@
+/* Background Animation Keyframes */
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 0.8; /* Increased max opacity for more visibility */
+    transform: scale(1.08); /* Increased scale for more dramatic effect */
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-30px) translateX(15px); /* Increased movement distance */
+  }
+  66% {
+    transform: translateY(10px) translateX(-15px); /* Added horizontal movement */
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+/* New bounce animation for circles */
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(40px, -20px);
+  }
+  50% {
+    transform: translate(0, 30px);
+  }
+  75% {
+    transform: translate(-40px, -10px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-7px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce 3s ease-in-out infinite;
+}
+
+/* Pulsate animation */
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.animate-pulsate {
+  animation: pulsate 2s ease-in-out infinite;
+}
+
+/* Pop animation */
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hover-pop:hover {
+  animation: pop 0.3s ease-in-out;
+}
+
+/* Wobble animation for logo hover */
+@keyframes wobble {
+  0%, 100% {
+    transform: translateX(0%);
+  }
+  15% {
+    transform: translateX(-5%) rotate(-5deg);
+  }
+  30% {
+    transform: translateX(4%) rotate(3deg);
+  }
+  45% {
+    transform: translateX(-3%) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(2%) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-1%) rotate(-1deg);
+  }
+  90% {
+    transform: translateX(1%) rotate(1deg);
+  }
+}
+
+.hover-wobble:hover {
+  animation: wobble 0.8s ease-in-out;
+}
